@@ -31,14 +31,24 @@ void	ft_prepare_pipe_io(int pipe_fd[2], int prev_pipe_fd, int i,
 void	ft_execute_child_command(t_command *cmd, char *cmd_path,
 		t_minishell *minishell)
 {
+	char	**env_array;
+
 	ft_redirect_io(cmd);
-	if (execve(cmd_path, cmd->cmd_args, ft_env_to_array(minishell)) == -1)
+	env_array = ft_env_to_array(minishell);
+	if (!env_array)
+	{
+		free(cmd_path);
+		exit(1);
+	}
+	ft_setup_child_signals();
+	if (execve(cmd_path, cmd->cmd_args, env_array) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->cmd_name, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(strerror(errno), 2);
 		ft_putstr_fd("\n", 2);
+		ft_free_env_array(env_array, -1);
 		free(cmd_path);
 		exit(1);
 	}

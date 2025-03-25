@@ -12,27 +12,56 @@
 
 #include "minishell.h"
 
-static int	ft_is_n_flag(char *arg)
+static int	ft_check_n_chars(char *str)
 {
 	int	i;
-	int	n_flag;
 
-	n_flag = 0;
-	i = 0;
-	if (arg[i] != '-')
-		return (n_flag);
-	i++;
-	while (arg[i] && arg[i] == 'n')
+	i = 1;
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
 		i++;
-	if (arg[i] == '\0')
-		n_flag = 1;
-	return (n_flag);
+	}
+	return (1);
+}
+
+static int	ft_is_n_flag(char *arg)
+{
+	char	*unquoted;
+	int		result;
+
+	if (!arg)
+		return (0);
+	unquoted = ft_remove_quotes_from_str(arg);
+	if (!unquoted)
+		return (0);
+	if (unquoted[0] != '-' || (unquoted[0] == '-' && !unquoted[1]))
+	{
+		free(unquoted);
+		return (0);
+	}
+	result = ft_check_n_chars(unquoted);
+	free(unquoted);
+	return (result);
+}
+
+static void	ft_print_arg(char *arg)
+{
+	char	*unquoted;
+
+	unquoted = ft_remove_quotes_from_str(arg);
+	if (unquoted)
+	{
+		ft_putstr_fd(unquoted, STDOUT_FILENO);
+		free(unquoted);
+	}
+	else
+		ft_putstr_fd(arg, STDOUT_FILENO);
 }
 
 static void	ft_echo_print_args(char **args, int n_flag, int i)
 {
-	char	*unquoted;
-
 	if (!args[i])
 	{
 		if (!n_flag)
@@ -41,14 +70,7 @@ static void	ft_echo_print_args(char **args, int n_flag, int i)
 	}
 	while (args[i])
 	{
-		unquoted = ft_remove_quotes_from_str(args[i]);
-		if (unquoted)
-		{
-			ft_putstr_fd(unquoted, STDOUT_FILENO);
-			free(unquoted);
-		}
-		else
-			ft_putstr_fd(args[i], STDOUT_FILENO);
+		ft_print_arg(args[i]);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;

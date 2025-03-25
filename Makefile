@@ -7,6 +7,7 @@ SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
 SRCS_NAMES	=	main.c \
 				builtins/cd.c \
+				builtins/cd_utils.c \
 				builtins/echo.c \
 				builtins/env.c \
 				builtins/exit.c \
@@ -40,6 +41,7 @@ SRCS_NAMES	=	main.c \
 				exec/pipeline_utils/pipeline_utils2.c \
 				exec/pipeline_utils/pipeline_utils3.c \
 				exec/pipeline_utils/pipeline_utils4.c \
+				exec/pipeline_utils/pipeline_utils5.c \
 				exec/pipeline_utils/redir_conversion1.c \
 				exec/pipeline_utils/redir_conversion2.c \
 				exec/pipeline_utils/redir_conversion3.c \

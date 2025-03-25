@@ -12,26 +12,15 @@
 
 #include "minishell.h"
 
-static void	ft_execute_in_child(t_child_data *data, char *cmd_path)
-{
-	ft_prepare_pipe_io(data->pipe_fd, data->prev_pipe_fd, data->i,
-		data->cmd_count);
-	if (ft_apply_redirections(data->cmd, data->minishell) == -1)
-	{
-		free(cmd_path);
-		exit(1);
-	}
-	ft_execute_child_command(data->cmd, cmd_path, data->minishell);
-}
+/* Declarations for functions now in pipeline_utils5.c */
+void	ft_execute_in_child(t_child_data *data, char *cmd_path);
+void	ft_execute_builtin_in_child(t_child_data *data);
+pid_t	ft_handle_builtin_in_pipeline(t_child_data *data);
 
-static pid_t	ft_handle_child_process(t_child_data *data)
+static pid_t	ft_handle_external_command(t_child_data *data, char *cmd_path)
 {
-	char	*cmd_path;
 	pid_t	pid;
 
-	cmd_path = ft_safe_find_command(data->cmd->cmd_name, data->minishell);
-	if (!cmd_path)
-		return (-1);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -44,9 +33,26 @@ static pid_t	ft_handle_child_process(t_child_data *data)
 	return (pid);
 }
 
+static pid_t	ft_handle_child_process(t_child_data *data)
+{
+	char	*cmd_path;
+
+	if (ft_is_builtin(data->cmd->cmd_name))
+		return (ft_handle_builtin_in_pipeline(data));
+	cmd_path = ft_find_command(data->cmd->cmd_name, data->minishell);
+	if (!cmd_path)
+	{
+		ft_handle_command_not_found(data->cmd->cmd_name);
+		return (-2);
+	}
+	return (ft_handle_external_command(data, cmd_path));
+}
+
 pid_t	ft_execute_pipeline_cmd(t_command *cmd, t_child_data *data)
 {
 	data->cmd = cmd;
+	if (!cmd->cmd_name || !*cmd->cmd_name)
+		return (-2);
 	if (data->cmd_count == 1 && ft_is_builtin(cmd->cmd_name))
 		return (-1);
 	return (ft_handle_child_process(data));

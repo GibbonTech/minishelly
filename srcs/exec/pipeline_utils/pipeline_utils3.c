@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 17:10:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 17:10:00 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/25 16:23:16 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,32 @@ int	ft_init_pipeline_execution(t_minishell *minishell, t_pipeline_data *data)
 	return (0);
 }
 
+static void	ft_setup_child_data(t_child_data *child_data, t_pipeline_data *data,
+		t_minishell *minishell)
+{
+	child_data->cmd = data->current;
+	child_data->pipe_fd[0] = data->pipe_fd[0];
+	child_data->pipe_fd[1] = data->pipe_fd[1];
+	child_data->prev_pipe_fd = data->prev_pipe_fd;
+	child_data->i = data->i;
+	child_data->cmd_count = data->cmd_count;
+	child_data->minishell = minishell;
+}
+
 int	ft_process_pipeline_command(t_pipeline_data *data, t_minishell *minishell)
 {
 	t_child_data	child_data;
+	pid_t			pid;
 
 	if (ft_setup_pipes(data->pipe_fd, &data->prev_pipe_fd, data->i,
 			data->cmd_count) == -1)
 		return (1);
-	child_data.cmd = data->current;
-	child_data.pipe_fd[0] = data->pipe_fd[0];
-	child_data.pipe_fd[1] = data->pipe_fd[1];
-	child_data.prev_pipe_fd = data->prev_pipe_fd;
-	child_data.i = data->i;
-	child_data.cmd_count = data->cmd_count;
-	child_data.minishell = minishell;
-	data->pids[data->i] = ft_execute_pipeline_cmd(data->current, &child_data);
+	ft_setup_child_data(&child_data, data, minishell);
+	pid = ft_execute_pipeline_cmd(data->current, &child_data);
+	if (pid == -2)
+		data->pids[data->i] = -1;
+	else
+		data->pids[data->i] = pid;
 	if (data->prev_pipe_fd != -1)
 		close(data->prev_pipe_fd);
 	if (data->i < data->cmd_count - 1)
