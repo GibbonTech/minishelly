@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 10:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 20:11:14 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/26 11:16:38 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 int	ft_apply_redirections(t_command *cmd, t_minishell *minishell)
 {
 	t_redir	*redir;
+	bool	heredoc_processed;
 
 	if (!cmd)
 		return (-1);
+	heredoc_processed = ft_has_heredoc(cmd) && cmd->input_fd != STDIN_FILENO;
 	redir = cmd->redirections;
 	while (redir)
 	{
@@ -30,8 +32,8 @@ int	ft_apply_redirections(t_command *cmd, t_minishell *minishell)
 		else if (redir->type == REDIR_APPEND
 			&& ft_append_redirection(redir->filename, cmd) == -1)
 			return (-1);
-		else if (redir->type == REDIR_HEREDOC && ft_process_heredoc(cmd,
-				redir->filename, minishell) == -1)
+		else if (redir->type == REDIR_HEREDOC && !heredoc_processed
+			&& ft_process_heredoc(cmd, redir->filename, minishell) == -1)
 			return (-1);
 		redir = redir->next;
 	}
@@ -52,4 +54,21 @@ void	ft_redirect_io(t_command *cmd)
 		dup2(cmd->output_fd, STDOUT_FILENO);
 		close(cmd->output_fd);
 	}
+}
+
+int	ft_process_heredoc_redirections(t_command *cmd, t_minishell *minishell)
+{
+	t_redir	*redir;
+
+	if (!cmd)
+		return (-1);
+	redir = cmd->redirections;
+	while (redir)
+	{
+		if (redir->type == REDIR_HEREDOC && ft_process_heredoc(cmd,
+				redir->filename, minishell) == -1)
+			return (-1);
+		redir = redir->next;
+	}
+	return (0);
 }

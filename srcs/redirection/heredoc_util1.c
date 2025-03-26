@@ -60,3 +60,24 @@ int	ft_check_delimiter(char *line, char *delimiter)
 		return (1);
 	return (0);
 }
+
+/*
+ * Check if a command has heredoc redirections
+ * @param cmd The command to check
+ * @return true if the command has heredoc redirections, false otherwise
+ */
+bool	ft_has_heredoc(t_command *cmd)
+{
+	t_redir	*redir;
+
+	if (!cmd)
+		return (false);
+	redir = cmd->redirections;
+	while (redir)
+	{
+		if (redir->type == REDIR_HEREDOC)
+			return (true);
+		redir = redir->next;
+	}
+	return (false);
+}

@@ -81,7 +81,9 @@ SRCS_NAMES	=	main.c \
 				utils/ft_replace_substr.c \
 				utils/ft_replace_substr_utils.c \
 				utils/main_utils.c \
-				utils/main_utils2.c
+				utils/main_utils2.c \
+				utils/input_preprocessing.c \
+				utils/input_preprocessing_utils.c
 
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRCS_DIR)/,$(SRCS_NAMES))

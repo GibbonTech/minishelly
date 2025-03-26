@@ -158,6 +158,8 @@ void		ft_reset_command_lists(t_minishell *minishell);
 int			ft_check_terminal(void);
 int			ft_handle_input(char **input);
 int			ft_run_shell_loop(t_minishell *minishell);
+char		*ft_insert_spaces_around_operators(char *input);
+void		ft_handle_operator(char *input, char *result, int *i, int *j);
 
 /* Builtins */
 int			ft_cd(t_minishell *minishell, char **args);
@@ -217,7 +219,7 @@ void		ft_append_token(t_minishell *minishell, t_token *token);
 
 /* Quote handling */
 int			is_quote(char c);
-t_quote_type		get_quote_type(char c);
+t_quote_type	 get_quote_type(char c);
 void		ft_set_quote_type(t_token *token);
 char		*ft_remove_quotes_from_str(char *str);
 void		ft_remove_quotes(t_token *token);
@@ -329,6 +331,7 @@ bool		ft_init_redir_conversion(t_minishell *minishell,
 bool		ft_process_commands_arguments(t_minishell *minishell,
 				t_redir_data *redir_data);
 void		ft_cleanup_redir_conversion(t_redir_data *redir_data);
+int			ft_process_heredoc_redirections(t_command *cmd, t_minishell *minishell);
 
 /* Heredoc handling */
 void		ft_write_heredoc(int fd, char *line);
@@ -342,6 +345,7 @@ int			ft_read_heredoc(int fd, char *delimiter, t_minishell *minishell);
 char		*ft_create_heredoc_file(int *count);
 int			ft_open_heredoc_file(char *file, int *fd);
 int			ft_setup_heredoc_input(t_command *cmd, char *file);
+bool		ft_has_heredoc(t_command *cmd);
 
 /* Expansion utilities */
 char		*ft_expand_env_vars(t_minishell *minishell, char *str);

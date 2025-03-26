@@ -42,15 +42,25 @@ int	initialize_minishell(t_minishell **minishell, char **envp)
 
 int	process_input(t_minishell *minishell, char *input)
 {
-	if (!ft_parsing(minishell, input))
+	char	*processed_input;
+	
+	processed_input = ft_insert_spaces_around_operators(input);
+	if (!processed_input)
+		return (0);
+	if (!ft_parsing(minishell, processed_input))
 	{
 		ft_free_token_list(minishell);
+		free(processed_input);
 		return (1);
 	}
 	ft_reset_command_lists(minishell);
-	if (!ft_prepare_commands(minishell, input))
+	if (!ft_prepare_commands(minishell, processed_input))
+	{
+		free(processed_input);
 		return (0);
+	}
 	minishell->exit_status = ft_execute_and_cleanup(minishell);
+	free(processed_input);
 	return (1);
 }
 
