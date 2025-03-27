@@ -45,6 +45,23 @@ int	ft_execute_builtin_with_redir(t_minishell *minishell, t_command *cmd,
 	return (status);
 }
 
+/* Handle empty command or command with redirections only */
+static int	ft_handle_empty_command(t_minishell *minishell, t_command *cmd)
+{
+	int	stdin_backup;
+	int	stdout_backup;
+
+	stdin_backup = dup(STDIN_FILENO);
+	stdout_backup = dup(STDOUT_FILENO);
+	if (ft_apply_redirections(cmd, minishell) == -1)
+	{
+		ft_restore_io(stdin_backup, stdout_backup);
+		return (1);
+	}
+	ft_restore_io(stdin_backup, stdout_backup);
+	return (0);
+}
+
 int	ft_execute_command_with_redir(t_minishell *minishell, t_command *cmd)
 {
 	char	*cmd_path;
@@ -53,11 +70,8 @@ int	ft_execute_command_with_redir(t_minishell *minishell, t_command *cmd)
 
 	stdin_backup = -1;
 	stdout_backup = -1;
-	if (ft_has_heredoc(cmd))
-	{
-		if (ft_process_heredoc_redirections(cmd, minishell) == -1)
-			return (1);
-	}
+	if (!cmd->cmd_name || !cmd->cmd_name[0])
+		return (ft_handle_empty_command(minishell, cmd));
 	if (ft_is_builtin(cmd->cmd_name))
 	{
 		stdin_backup = dup(STDIN_FILENO);

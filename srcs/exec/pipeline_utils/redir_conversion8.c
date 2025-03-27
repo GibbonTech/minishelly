@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   redir_conversion8.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/15 12:00:00 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/23 20:10:46 by ykhomsi          ###   ########.fr       */
+/*   Created: 2025/03/23 17:33:00 by ykhomsi           #+#    #+#             */
+/*   Updated: 2025/03/27 07:32:21 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_process_heredoc(t_command *cmd, char *delimiter, t_minishell *minishell)
+bool	ft_handle_empty_command_list(t_minishell *minishell)
 {
-	char		*file;
-	int			fd;
-	static int	count = 0;
+	t_command	*new_cmd;
 
-	file = ft_create_heredoc_file(&count);
-	if (!file)
-		return (-1);
-	if (!ft_open_heredoc_file(file, &fd))
-		return (-1);
-	if (!ft_read_heredoc(fd, delimiter, minishell))
+	if (!minishell->token_list)
+		return (true);
+	new_cmd = ft_create_command_struct("", NULL);
+	if (!new_cmd)
+		return (false);
+	if (!ft_add_command(minishell, new_cmd))
 	{
-		unlink(file);
-		free(file);
-		return (-1);
+		ft_delete_command(new_cmd);
+		return (false);
 	}
-	if (!ft_setup_heredoc_input(cmd, file))
-		return (-1);
-	return (0);
+	return (true);
 }

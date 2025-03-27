@@ -22,7 +22,11 @@ static int	ft_count_operator_spaces(char *input, int i)
 		count++;
 	if (input[i + 1] && input[i + 1] != ' ' && ((input[i] == '>' && input[i
 					+ 1] == '>') || (input[i] == '<' && input[i + 1] == '<')))
+	{
 		i++;
+		if (input[i + 1] && input[i + 1] != ' ')
+			count++;
+	}
 	else if (input[i + 1] && input[i + 1] != ' ' && input[i + 1] != '>'
 		&& input[i + 1] != '<')
 		count++;
@@ -63,7 +67,7 @@ static int	ft_count_spaces_needed(char *input)
 		else
 			i++;
 	}
-	return (count * 2);
+	return (count);
 }
 
 static void	ft_process_quote(char *input, char *result, int *i, int *j)
@@ -88,7 +92,7 @@ char	*ft_insert_spaces_around_operators(char *input)
 	if (!input)
 		return (NULL);
 	spaces_needed = ft_count_spaces_needed(input);
-	result = malloc(ft_strlen(input) + spaces_needed + 1);
+	result = malloc(ft_strlen(input) + spaces_needed * 2 + 1);
 	if (!result)
 		return (NULL);
 	i = 0;

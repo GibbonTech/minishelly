@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/24 15:46:22 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/27 07:31:08 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ void	ft_sigint_child_handler(int sig)
 void	ft_heredoc_sigint_handler(int sig)
 {
 	(void)sig;
-	write(STDERR_FILENO, "\n", 1);
-	close(STDIN_FILENO);
 	g_exit_codes = 130;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	close(STDIN_FILENO);
+	exit(130);
 }
 
 int	sig_event(void)

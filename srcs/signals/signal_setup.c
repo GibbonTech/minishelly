@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 15:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/24 15:46:40 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/27 07:31:05 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,16 @@ void	ft_setup_exec_signals(void)
 void	ft_setup_heredoc_signals(void)
 {
 	struct sigaction	sa;
+	struct sigaction	sq;
 
 	memset(&sa, 0, sizeof(sa));
-	sa.sa_handler = ft_sigint_child_handler;
+	sa.sa_handler = ft_heredoc_sigint_handler;
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
+	memset(&sq, 0, sizeof(sq));
+	sq.sa_handler = SIG_IGN;
+	sq.sa_flags = 0;
+	sigaction(SIGQUIT, &sq, NULL);
 }
 
 void	ft_setup_child_signals(void)

@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 10:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/26 11:16:38 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/27 07:27:55 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,19 @@ void	ft_redirect_io(t_command *cmd)
 int	ft_process_heredoc_redirections(t_command *cmd, t_minishell *minishell)
 {
 	t_redir	*redir;
+	int		result;
 
 	if (!cmd)
 		return (-1);
 	redir = cmd->redirections;
 	while (redir)
 	{
-		if (redir->type == REDIR_HEREDOC && ft_process_heredoc(cmd,
-				redir->filename, minishell) == -1)
-			return (-1);
+		if (redir->type == REDIR_HEREDOC)
+		{
+			result = ft_process_heredoc(cmd, redir->filename, minishell);
+			if (result == -1)
+				return (-1);
+		}
 		redir = redir->next;
 	}
 	return (0);

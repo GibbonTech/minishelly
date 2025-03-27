@@ -1,7 +1,19 @@
 NAME		=	minishell
 
 CC			=	cc
-C_FLAGS		=	-Wall -Wextra -Werror -g3 -MMD -MP
+CFLAGS		=	-Wall -Wextra -Werror
+
+# Colors
+GREEN		=	\033[1;32m
+YELLOW		=	\033[1;33m
+CYAN		=	\033[1;36m
+PURPLE		=	\033[1;35m
+RESET		=	\033[0m
+
+# Counter for progress bar
+COUNT		=	0
+TOTAL		=	$(words $(SRCS_NAMES))
+PERCENT		=	0
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
@@ -48,6 +60,8 @@ SRCS_NAMES	=	main.c \
 				exec/pipeline_utils/redir_conversion4.c \
 				exec/pipeline_utils/redir_conversion5.c \
 				exec/pipeline_utils/redir_conversion6.c \
+				exec/pipeline_utils/redir_conversion7.c \
+				exec/pipeline_utils/redir_conversion8.c \
 				expand/envar.c \
 				expand/envar_utils.c \
 				expand/var_utils.c \
@@ -77,6 +91,7 @@ SRCS_NAMES	=	main.c \
 				utils/cmd_processing.c \
 				utils/cmd_processing_utils2.c \
 				utils/cmd_processing_utils3.c \
+				utils/cmd_processing_utils4.c \
 				utils/error_utils.c \
 				utils/ft_replace_substr.c \
 				utils/ft_replace_substr_utils.c \
@@ -88,46 +103,55 @@ SRCS_NAMES	=	main.c \
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRCS_DIR)/,$(SRCS_NAMES))
 OBJS		=	$(addprefix $(OBJ_DIR)/,$(OBJS_NAMES))
-DEPS		=	$(OBJS:.o=.d)
 
 HEADER		=	-Iincludes -Ilibft
 
 LIBFT		=	libft/libft.a
 
-# Colors for minimal output
-GREEN		=	\033[1;32m
-RED			=	\033[1;31m
-RESET		=	\033[0m
+define MINISHELL_ART
+$(CYAN)
+███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗     
+████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     
+██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║     
+██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║     
+██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗
+╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+$(RESET)
+endef
+export MINISHELL_ART
 
-all: $(LIBFT) $(NAME)
+all: banner $(LIBFT) $(NAME)
+
+banner:
+	@clear
+	@echo "$$MINISHELL_ART"
+	@echo "$(PURPLE)Building your shell...$(RESET)\n"
 
 $(NAME): $(OBJS)
-	@echo "$(GREEN)Linking minishell...$(RESET)"
-	@$(CC) $(C_FLAGS) $(OBJS) $(HEADER) $(LIBFT) -lreadline -o $(NAME) || (echo "$(RED)Error: Linking failed!$(RESET)" && exit 1)
-	@echo "$(GREEN)Build successful!$(RESET)"
+	@echo "\n$(GREEN)⚡ Linking minishell...$(RESET)"
+	@$(CC) $(CFLAGS) $(OBJS) $(HEADER) $(LIBFT) -lreadline -o $(NAME)
+	@echo "$(GREEN)✨ Build successful!$(RESET)\n"
 
 $(LIBFT):
+	@echo "$(YELLOW)📚 Building libft...$(RESET)"
 	@make -sC libft
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
-	@printf "$(GREEN)•$(RESET)"
 	@mkdir -p $(dir $@)
-	@$(CC) $(C_FLAGS) -c $< -o $@ $(HEADER) || (printf "\n$(RED)Error: Compilation of $< failed!$(RESET)\n" && exit 1)
+	@printf "$(YELLOW)⚙️  [%3d%%] Compiling: %-50s$(RESET)\r" $$(( $(COUNT) * 100 / $(TOTAL) )) $(notdir $<)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER)
+	@$(eval COUNT=$(shell echo $$(($(COUNT)+1))))
 
 clean:
 	@make -sC libft clean
 	@rm -rf $(OBJ_DIR)
-	@find . -name "*.o" -type f -not -path "./libft/*" -delete
-	@echo "$(GREEN)Object files cleaned$(RESET)"
+	@echo "$(GREEN)🧹 Object files cleaned$(RESET)"
 
 fclean: clean
 	@make -sC libft fclean
-	@rm -rf $(NAME)
-	@find . -name "*.o" -type f -delete
-	@echo "$(GREEN)Executable removed$(RESET)"
+	@rm -f $(NAME)
+	@echo "$(GREEN)🗑️  Executable removed$(RESET)"
 
 re: fclean all
 
-.PHONY: all clean fclean re
-
--include $(DEPS)
+.PHONY: all clean fclean re banner
