@@ -73,6 +73,7 @@ SRCS_NAMES	=	main.c \
 				parse/parsing.c \
 				parse/quotes.c \
 				parse/quotes/quotes_utils.c \
+				parse/quotes/quotes_process.c \
 				parse/token_order.c \
 				redirection/heredoc.c \
 				redirection/heredoc_util1.c \

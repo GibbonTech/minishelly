@@ -21,18 +21,3 @@ int	is_quote(char c)
 {
 	return (c == '\'' || c == '\"');
 }
-
-/**
- * Get the quote type for a character
- * @param c Character to check
- * @return QUOTE_SINGLE for single quotes, QUOTE_DOUBLE for double quotes,
- *         QUOTE_NONE otherwise
- */
-t_quote_type	get_quote_type(char c)
-{
-	if (c == '\'')
-		return (QUOTE_SINGLE);
-	if (c == '\"')
-		return (QUOTE_DOUBLE);
-	return (QUOTE_NONE);
-}

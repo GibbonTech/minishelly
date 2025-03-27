@@ -12,15 +12,9 @@
 
 #include "minishell.h"
 
-int	ft_apply_redirections(t_command *cmd, t_minishell *minishell)
+static int	ft_handle_regular_redirections(t_redir *redir, t_command *cmd,
+				t_minishell *minishell, bool heredoc_processed)
 {
-	t_redir	*redir;
-	bool	heredoc_processed;
-
-	if (!cmd)
-		return (-1);
-	heredoc_processed = ft_has_heredoc(cmd) && cmd->input_fd != STDIN_FILENO;
-	redir = cmd->redirections;
 	while (redir)
 	{
 		if (redir->type == REDIR_INPUT && ft_input_redirection(redir->filename,
@@ -38,6 +32,21 @@ int	ft_apply_redirections(t_command *cmd, t_minishell *minishell)
 		redir = redir->next;
 	}
 	return (0);
+}
+
+int	ft_apply_redirections(t_command *cmd, t_minishell *minishell)
+{
+	t_redir	*redir;
+	bool	heredoc_processed;
+
+	if (!cmd)
+		return (-1);
+	heredoc_processed = false;
+	if (ft_has_heredoc(cmd))
+		heredoc_processed = (cmd->input_fd != STDIN_FILENO);
+	redir = cmd->redirections;
+	return (ft_handle_regular_redirections(redir, cmd, minishell,
+			heredoc_processed));
 }
 
 void	ft_redirect_io(t_command *cmd)

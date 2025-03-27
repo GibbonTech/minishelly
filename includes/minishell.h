@@ -216,13 +216,12 @@ bool		ft_create_hdoc_token(t_minishell *minishell);
 void		ft_append_token(t_minishell *minishell, t_token *token);
 
 /* Quote handling */
-/* Quote handling */
-int		is_quote(char c);
-t_quote_type	get_quote_type(char c);
+int			is_quote(char c);
 void		ft_set_quote_type(t_token *token);
 char		*ft_remove_quotes_from_str(char *str);
 void		ft_remove_quotes(t_token *token);
 char		*ft_process_quotes_simple(char *str, char **result);
+
 /* Command handling */
 bool		ft_create_cmd_list(t_minishell *minishell, char **cmd_cells);
 bool		ft_create_cmd(t_minishell *minishell, char **cmd_args);
