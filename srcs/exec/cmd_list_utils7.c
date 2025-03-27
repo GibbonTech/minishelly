@@ -14,7 +14,15 @@
 
 static bool	ft_process_cmd_name(t_cmd *new_cmd, char **expanded_args)
 {
-	new_cmd->cmd_name = ft_strdup(expanded_args[0]);
+	if (expanded_args[0])
+	{
+		if (expanded_args[0][0] == '>' || expanded_args[0][0] == '<')
+			new_cmd->cmd_name = ft_strdup("");
+		else
+			new_cmd->cmd_name = ft_strdup(expanded_args[0]);
+	}
+	else
+		new_cmd->cmd_name = ft_strdup("");
 	if (!new_cmd->cmd_name)
 	{
 		ft_free_table(expanded_args);

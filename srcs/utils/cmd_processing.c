@@ -55,7 +55,7 @@ bool	ft_cmd_struct(char *input, t_minishell *minishell)
 	char	**cmd_cells;
 	int		i;
 
-	cmd_cells = ft_split_with_quotes(input, '|');
+	cmd_cells = ft_split(input, '|');
 	if (!cmd_cells)
 		return (false);
 	i = 0;
