@@ -6,18 +6,12 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:15:00 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/23 20:13:30 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:57:43 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Create a new redirection structure
- * @param type Type of redirection
- * @param filename Filename for redirection
- * @return New redirection structure or NULL on error
- */
 t_redir	*ft_create_redirection(t_redir_type type, char *filename)
 {
 	t_redir	*redir;
@@ -41,13 +35,6 @@ t_redir	*ft_create_redirection(t_redir_type type, char *filename)
 	return (redir);
 }
 
-/**
- * Add a redirection to a command
- * @param cmd Command to add redirection to
- * @param type Type of redirection
- * @param filename Filename for redirection
- * @return true if successful, false otherwise
- */
 bool	ft_add_redirection(t_command *cmd, t_redir_type type, char *filename)
 {
 	t_redir	*new_redir;

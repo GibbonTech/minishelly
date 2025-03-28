@@ -6,14 +6,11 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:27:15 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/24 19:17:15 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:12:45 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* External function from cmd_processing_utils3.c */
-int	ft_word_len(char *str);
 
 static bool	ft_handle_quote(bool *in_quote, char *quote_type, char current)
 {

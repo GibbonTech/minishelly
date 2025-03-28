@@ -6,20 +6,12 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:22:15 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 22:22:16 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:01:55 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Duplicate environment variable key and value
- * @param key Variable key (name)
- * @param value Variable value
- * @param key_dup Pointer to store duplicated key
- * @param value_dup Pointer to store duplicated value
- * @return true if successful, false otherwise
- */
 static bool	ft_dup_envar_strings(char *key, char *value,
 								char **key_dup, char **value_dup)
 {
@@ -40,12 +32,6 @@ static bool	ft_dup_envar_strings(char *key, char *value,
 	return (true);
 }
 
-/**
- * Create a new environment variable structure
- * @param key Variable key (name)
- * @param value Variable value
- * @return Newly created environment variable or NULL on error
- */
 static t_envar	*ft_create_envar(char *key, char *value)
 {
 	t_envar	*new_envar;
@@ -67,13 +53,6 @@ static t_envar	*ft_create_envar(char *key, char *value)
 	return (new_envar);
 }
 
-/**
- * Add an environment variable to the minishell environment
- * @param minishell The minishell structure
- * @param key Variable key (name)
- * @param value Variable value
- * @return true if successful, false otherwise
- */
 bool	ft_add_envar(t_minishell *minishell, char *key, char *value)
 {
 	t_envar	*new_envar;

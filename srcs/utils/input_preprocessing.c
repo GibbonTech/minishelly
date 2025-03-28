@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 20:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/26 11:16:07 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:51:27 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,19 @@ static int	ft_count_spaces_needed(char *input)
 	return (count);
 }
 
-static void	ft_process_quote(char *input, char *result, int *i, int *j)
+static void	ft_process_input_quote(char *input, char *result, int *i, int *j)
 {
 	char	quote;
 
-	quote = input[*i];
-	result[(*j)++] = input[(*i)++];
-	while (input[*i] && input[*i] != quote)
+	if (input[*i] == '\'' || input[*i] == '\"')
+	{
+		quote = input[*i];
 		result[(*j)++] = input[(*i)++];
-	if (input[*i])
-		result[(*j)++] = input[(*i)++];
+		while (input[*i] && input[*i] != quote)
+			result[(*j)++] = input[(*i)++];
+		if (input[*i])
+			result[(*j)++] = input[(*i)++];
+	}
 }
 
 char	*ft_insert_spaces_around_operators(char *input)
@@ -100,7 +103,7 @@ char	*ft_insert_spaces_around_operators(char *input)
 	while (input[i])
 	{
 		if (input[i] == '\'' || input[i] == '\"')
-			ft_process_quote(input, result, &i, &j);
+			ft_process_input_quote(input, result, &i, &j);
 		else if (input[i] == '|' || input[i] == '>' || input[i] == '<')
 			ft_handle_operator(input, result, &i, &j);
 		else

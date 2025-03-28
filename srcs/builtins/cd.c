@@ -6,15 +6,11 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 00:59:20 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 01:01:32 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:56:12 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_update_pwd(t_minishell *minishell);
-int	ft_cd_previous(t_minishell *minishell);
-int	ft_change_dir(t_minishell *minishell, char *path);
 
 int	ft_cd_home(t_minishell *minishell)
 {

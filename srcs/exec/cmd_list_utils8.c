@@ -6,17 +6,11 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 01:36:49 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/24 17:48:26 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:00:29 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* These functions are for environment variable expansion processing */
-
-bool		ft_process_char_in_loop(t_minishell *minishell, char *str,
-				char **expanded, int *pos);
-bool		ft_check_buffer_size(char **expanded, int *pos, int *buffer_size);
 
 static bool	ft_handle_quote_char(t_exp_data *data, char *str, char **expanded)
 {

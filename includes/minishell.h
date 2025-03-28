@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 18:09:30 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/27 07:48:46 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:53:16 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-/* Global variable for signal handling */
+/* GLOBAL VARIABLES */
+/* Global variable to store the exit codes of the shell and its children */
 extern volatile sig_atomic_t	g_exit_codes;
 
 /* ENUMERATIONS */
@@ -143,6 +144,22 @@ typedef struct s_redir_data
 	int				redir_count;
 }	t_redir_data;
 
+typedef struct s_word_state
+{
+	int		count;
+	bool	in_quotes;
+	bool	in_word;
+}	t_word_state;
+
+typedef struct s_result_state
+{
+	int		i;
+	int		j;
+	int		start;
+	char	quote;
+	bool	in_quotes;
+}	t_result_state;
+
 /* FUNCTION PROTOTYPES */
 
 /* Main and initialization */
@@ -197,6 +214,7 @@ void		ft_skip_quoted_word(char const *s, int *i);
 bool		ft_token_order(t_minishell *minishell);
 bool		ft_cmd_struct(char *input, t_minishell *minishell);
 bool		ft_convert_to_commands_with_redir(t_minishell *minishell);
+bool		ft_process_redir(t_minishell *minishell, char *input, int *i);
 
 /* Token operations */
 bool		ft_pipe(t_minishell *minishell, int *i);
@@ -244,6 +262,14 @@ bool		ft_add_redirection(t_command *cmd, t_redir_type type,
 bool		ft_process_word(char **split, char const *s, char c, int pos[2]);
 char		*ft_replace_substr(char *str, int start, int len,
 				char *replacement);
+
+/* ft_replace_substr_utils.c */
+char		*ft_prepare_replace_substr(char *str, int start, int len,
+				char *replacement);
+void		ft_copy_prefix(char *result, char *str, int start);
+void		ft_copy_replacement(char *result, char *replacement, int start,
+				int repl_len);
+void		ft_copy_suffix(char *result, char *str, int start, int len);
 
 /* Environment variables */
 char		*ft_expand_var(t_minishell *minishell, char *var_name);
@@ -295,6 +321,11 @@ int			ft_init_pipeline_execution(t_minishell *minishell,
 int			ft_process_pipeline_command(t_pipeline_data *data,
 				t_minishell *minishell);
 int			ft_finish_pipeline_execution(t_pipeline_data *data);
+void		ft_execute_in_child(t_child_data *data, char *cmd_path);
+void		ft_execute_builtin_in_child(t_child_data *data);
+pid_t		ft_handle_builtin_in_pipeline(t_child_data *data);
+void		ft_setup_child_data(t_child_data *child_data,
+				t_pipeline_data *data, t_minishell *minishell);
 
 /* Redirection handling */
 int			ft_input_redirection(char *filename, t_command *cmd);
@@ -386,5 +417,30 @@ void		ft_handle_operator(char *input, char *result, int *i, int *j);
 bool		ft_has_heredoc(t_command *cmd);
 int			ft_process_heredoc_redirections(t_command *cmd,
 				t_minishell *minishell);
+
+/* cmd_processing_utils2.c */
+size_t		ft_count_words(const char *s, char c);
+void		ft_skip_spaces(char *str, int *i);
+void		ft_allocate_word(char **args, char *cmd_cell, int i, int j);
+
+/* cmd_processing_utils3.c */
+int			ft_word_len(char *str);
+
+/* cmd_processing_utils4.c */
+bool		ft_in_quotes(char *str, int pos);
+bool		ft_update_word_state(char *str, int i, bool *in_quotes,
+				bool *in_word);
+char		**ft_split_with_quotes(char *str, char c);
+
+/* cmd_processing_utils5.c */
+bool		ft_process_quote(char *str, int *i, char *quote, bool *in_quotes);
+void		ft_fill_result(char **result, char *str, char c);
+
+/* cmd_processing_utils6.c */
+void		ft_process_delimiter(char *str, int *i, char c, bool *in_word);
+int			ft_count_parts_helper(char *str, char c);
+
+/* cmd_processing_utils7.c */
+void		ft_fill_result_helper(char **result, char *str, char c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 22:29:21 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/27 10:39:05 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:02:15 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,6 @@ typedef struct s_quote_params
 	char	quote_state;
 }	t_quote_params;
 
-/**
- * Helper function to process a quote character
- * @param str Input string
- * @param result Pointer to store the result
- * @param params Pointer to quote processing parameters
- */
 static void	ft_handle_quote_char(char *str, char **result,
 		t_quote_params *params)
 {
@@ -46,12 +40,6 @@ static void	ft_handle_quote_char(char *str, char **result,
 		(*result)[(params->j)++] = str[(params->i)++];
 }
 
-/**
- * Process a string to remove quotes
- * @param str Input string
- * @param result Pointer to store the result
- * @return Pointer to the result or NULL on error
- */
 char	*ft_process_quotes_simple(char *str, char **result)
 {
 	t_quote_params	params;

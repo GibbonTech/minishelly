@@ -6,18 +6,12 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:15:00 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/23 20:13:30 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:57:41 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Set command name
- * @param cmd Command structure
- * @param cmd_name Command name
- * @return true if successful, false otherwise
- */
 static bool	ft_set_command_name(t_command *cmd, char *cmd_name)
 {
 	if (cmd_name)
@@ -29,11 +23,6 @@ static bool	ft_set_command_name(t_command *cmd, char *cmd_name)
 	return (true);
 }
 
-/**
- * Count number of arguments
- * @param cmd_args Array of command arguments
- * @return Number of arguments
- */
 static int	ft_count_args(char **cmd_args)
 {
 	int	arg_count;
@@ -47,13 +36,6 @@ static int	ft_count_args(char **cmd_args)
 	return (arg_count);
 }
 
-/**
- * Allocate and set command arguments
- * @param cmd Command structure
- * @param cmd_args Command arguments
- * @param arg_count Number of arguments
- * @return true if successful, false otherwise
- */
 static bool	ft_set_command_args(t_command *cmd, char **cmd_args, int arg_count)
 {
 	int	i;
@@ -78,13 +60,6 @@ static bool	ft_set_command_args(t_command *cmd, char **cmd_args, int arg_count)
 	return (true);
 }
 
-/**
- * Set up the command structure with arguments
- * @param cmd Command structure to set up
- * @param cmd_name Command name
- * @param cmd_args Command arguments
- * @return true if successful, false otherwise
- */
 static bool	ft_setup_command(t_command *cmd, char *cmd_name, char **cmd_args)
 {
 	int	arg_count;
@@ -104,12 +79,6 @@ static bool	ft_setup_command(t_command *cmd, char *cmd_name, char **cmd_args)
 	return (true);
 }
 
-/**
- * Create a command structure with name and arguments
- * @param cmd_name Command name
- * @param cmd_args Command arguments
- * @return New command structure or NULL on error
- */
 t_command	*ft_create_command_struct(char *cmd_name, char **cmd_args)
 {
 	t_command	*cmd;

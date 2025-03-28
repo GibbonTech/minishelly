@@ -6,15 +6,11 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 01:36:49 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/24 15:43:17 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:00:19 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Function from cmd_list_utils8.c */
-bool		ft_process_expansion_loop(t_minishell *minishell, char *str,
-				char **expanded, int *pos);
 
 static bool	ft_init_expansion_params(int *pos, int buffer_size)
 {

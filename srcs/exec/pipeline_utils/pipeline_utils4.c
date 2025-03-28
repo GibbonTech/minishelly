@@ -6,16 +6,11 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 17:15:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 19:40:11 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 17:50:05 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Declarations for functions now in pipeline_utils5.c */
-void	ft_execute_in_child(t_child_data *data, char *cmd_path);
-void	ft_execute_builtin_in_child(t_child_data *data);
-pid_t	ft_handle_builtin_in_pipeline(t_child_data *data);
 
 static pid_t	ft_handle_external_command(t_child_data *data, char *cmd_path)
 {

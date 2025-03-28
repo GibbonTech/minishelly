@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 19:30:09 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/23 22:28:11 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:02:26 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_wordlen(char *input)
 	char	quote;
 
 	i = 0;
-	while (input[i] && !ft_space(input[i]) && !ft_notword(input[i]))
+	while (input[i] && !ft_space(input[i]))
 	{
 		if (input[i] == '\'' || input[i] == '\"')
 		{
@@ -41,9 +41,12 @@ int	ft_wordlen(char *input)
 				i++;
 			if (input[i])
 				i++;
+			continue ;
 		}
-		else
+		if (!ft_notword(input[i]) || ft_space(input[i]))
 			i++;
+		else
+			break ;
 	}
 	return (i);
 }

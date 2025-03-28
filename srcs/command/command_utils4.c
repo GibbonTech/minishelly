@@ -6,16 +6,12 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:15:00 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/23 20:13:30 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 23:57:59 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Free command arguments
- * @param cmd_args Command arguments array to free
- */
 static void	ft_free_command_args(char **cmd_args)
 {
 	int	i;
@@ -31,10 +27,6 @@ static void	ft_free_command_args(char **cmd_args)
 	free(cmd_args);
 }
 
-/**
- * Free all redirections in a command
- * @param redirections First redirection in linked list
- */
 static void	ft_free_redirections(t_redir *redirections)
 {
 	t_redir	*current;
@@ -49,10 +41,6 @@ static void	ft_free_redirections(t_redir *redirections)
 	}
 }
 
-/**
- * Delete a command structure and free all its resources
- * @param cmd Command to delete
- */
 void	ft_delete_command(t_command *cmd)
 {
 	if (!cmd)
@@ -70,10 +58,6 @@ void	ft_delete_command(t_command *cmd)
 	free(cmd);
 }
 
-/**
- * Free all commands in the minishell command list
- * @param minishell The minishell structure
- */
 void	ft_free_command_list(t_minishell *minishell)
 {
 	t_command	*current;

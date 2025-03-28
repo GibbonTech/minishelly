@@ -6,18 +6,12 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 22:22:15 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 22:22:16 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:01:26 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Extract key from environment variable string
- * @param envar Environment variable string
- * @param delimiter Delimiter character (usually '=')
- * @return Allocated key string or NULL on error
- */
 char	*ft_get_key(char *envar, char delimiter)
 {
 	int		i;
@@ -33,12 +27,6 @@ char	*ft_get_key(char *envar, char delimiter)
 	return (key);
 }
 
-/**
- * Extract value from environment variable string
- * @param envar Environment variable string
- * @param start Starting position for value
- * @return Allocated value string or NULL on error
- */
 char	*ft_get_value(char *envar, int start)
 {
 	if (!envar[start])
@@ -46,12 +34,6 @@ char	*ft_get_value(char *envar, int start)
 	return (ft_strdup(envar + start));
 }
 
-/**
- * Create environment variable list from envp array
- * @param envp Environment variables array
- * @param minishell The minishell structure
- * @return true if successful, false otherwise
- */
 bool	ft_envar_list(char **envp, t_minishell *minishell)
 {
 	int		i;

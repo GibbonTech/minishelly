@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/24 10:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 20:11:57 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:09:08 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,6 @@ int	ft_check_delimiter(char *line, char *delimiter)
 	return (0);
 }
 
-/*
- * Check if a command has heredoc redirections
- * @param cmd The command to check
- * @return true if the command has heredoc redirections, false otherwise
- */
 bool	ft_has_heredoc(t_command *cmd)
 {
 	t_redir	*redir;

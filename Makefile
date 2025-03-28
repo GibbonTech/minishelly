@@ -71,6 +71,7 @@ SRCS_NAMES	=	main.c \
 				parse/ft_split_quotes_utils2.c \
 				parse/parse_char.c \
 				parse/parsing.c \
+				parse/parsing2.c \
 				parse/quotes.c \
 				parse/quotes/quotes_utils.c \
 				parse/quotes/quotes_process.c \
@@ -81,6 +82,7 @@ SRCS_NAMES	=	main.c \
 				redirection/heredoc_util3.c \
 				redirection/redirection1.c \
 				redirection/redirection2.c \
+				redirection/redirection3.c \
 				signals/signal_handlers.c \
 				signals/signal_setup.c \
 				token/check_tokens.c \
@@ -93,6 +95,9 @@ SRCS_NAMES	=	main.c \
 				utils/cmd_processing_utils2.c \
 				utils/cmd_processing_utils3.c \
 				utils/cmd_processing_utils4.c \
+				utils/cmd_processing_utils5.c \
+				utils/cmd_processing_utils6.c \
+				utils/cmd_processing_utils7.c \
 				utils/error_utils.c \
 				utils/ft_replace_substr.c \
 				utils/ft_replace_substr_utils.c \

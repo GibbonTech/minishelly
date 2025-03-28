@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 08:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/27 07:46:56 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/28 06:11:33 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,44 +30,25 @@ bool	ft_in_quotes(char *str, int pos)
 	return (quote != 0);
 }
 
-static int	ft_count_parts(char *str, char c)
+bool	ft_update_word_state(char *str, int i, bool *in_quotes,
+		bool *in_word)
 {
-	int	i;
-	int	count;
+	static char	quote;
 
-	i = 0;
-	count = 1;
-	while (str[i])
+	if ((str[i] == '\'' || str[i] == '\"') && !*in_quotes)
 	{
-		if (str[i] == c && !ft_in_quotes(str, i))
-			count++;
-		i++;
+		quote = str[i];
+		*in_quotes = true;
+		*in_word = true;
+		return (true);
 	}
-	return (count);
-}
-
-static void	ft_fill_result(char **result, char *str, char c)
-{
-	int	i;
-	int	j;
-	int	start;
-
-	i = 0;
-	j = 0;
-	start = 0;
-	while (str[i])
+	else if (str[i] == quote && *in_quotes)
 	{
-		if (str[i] == c && !ft_in_quotes(str, i))
-		{
-			str[i] = '\0';
-			result[j++] = ft_strdup(str + start);
-			str[i] = c;
-			start = i + 1;
-		}
-		i++;
+		quote = 0;
+		*in_quotes = false;
+		return (true);
 	}
-	result[j++] = ft_strdup(str + start);
-	result[j] = NULL;
+	return (false);
 }
 
 char	**ft_split_with_quotes(char *str, char c)
@@ -75,10 +56,12 @@ char	**ft_split_with_quotes(char *str, char c)
 	char	**result;
 	int		count;
 
-	count = ft_count_parts(str, c);
+	if (!str)
+		return (NULL);
+	count = ft_count_parts_helper(str, c);
 	result = malloc(sizeof(char *) * (count + 1));
 	if (!result)
 		return (NULL);
-	ft_fill_result(result, str, c);
+	ft_fill_result_helper(result, str, c);
 	return (result);
 }

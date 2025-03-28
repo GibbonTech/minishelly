@@ -32,7 +32,7 @@ int	ft_init_pipeline_execution(t_minishell *minishell, t_pipeline_data *data)
 	return (0);
 }
 
-static void	ft_setup_child_data(t_child_data *child_data, t_pipeline_data *data,
+void	ft_setup_child_data(t_child_data *child_data, t_pipeline_data *data,
 		t_minishell *minishell)
 {
 	child_data->cmd = data->current;
@@ -62,8 +62,8 @@ int	ft_process_pipeline_command(t_pipeline_data *data, t_minishell *minishell)
 		close(data->prev_pipe_fd);
 	if (data->i < data->cmd_count - 1)
 	{
-		close(data->pipe_fd[1]);
 		data->prev_pipe_fd = data->pipe_fd[0];
+		close(data->pipe_fd[1]);
 	}
 	return (0);
 }

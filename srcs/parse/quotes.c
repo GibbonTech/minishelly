@@ -6,18 +6,12 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 22:29:21 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 22:55:13 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:08:47 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/**
- * Get the quote type for a character
- * @param c Character to check
- * @return QUOTE_SINGLE for single quotes, QUOTE_DOUBLE for double quotes,
- *         QUOTE_NONE otherwise
- */
 static t_quote_type	get_quote_type(char c)
 {
 	if (c == '\'')

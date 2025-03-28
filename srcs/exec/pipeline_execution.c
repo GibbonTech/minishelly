@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 19:09:26 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/26 10:13:38 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:01:03 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,43 +33,48 @@ static int	ft_process_all_heredocs(t_minishell *minishell)
 	return (0);
 }
 
-/**
- * Execute a pipeline of commands with redirections
- * @param minishell The minishell structure
- * @return The exit status of the last command
- */
+static int	ft_handle_pipeline_init(t_minishell *minishell,
+		t_pipeline_data *data)
+{
+	if (ft_process_all_heredocs(minishell) == -1)
+		return (-1);
+	if (ft_init_pipeline_execution(minishell, data) == 1)
+		return (1);
+	return (0);
+}
+
+static int	ft_process_pipeline(t_pipeline_data *data, t_minishell *minishell)
+{
+	while (data->current && data->i < data->cmd_count)
+	{
+		if (ft_process_pipeline_command(data, minishell))
+		{
+			free(data->pids);
+			return (1);
+		}
+		data->current = data->current->next;
+		data->i++;
+	}
+	return (0);
+}
+
 int	ft_execute_pipeline_with_redir(t_minishell *minishell)
 {
 	t_pipeline_data	data;
-	int				init_result;
+	int				init_status;
 	int				status;
 
-	if (ft_process_all_heredocs(minishell) == -1)
+	init_status = ft_handle_pipeline_init(minishell, &data);
+	if (init_status == -1)
 		return (1);
-	init_result = ft_init_pipeline_execution(minishell, &data);
-	if (init_result == 1)
+	if (init_status == 1)
 		return (ft_execute_command_with_redir(minishell, minishell->commands));
-	else if (init_result == -1)
+	if (ft_process_pipeline(&data, minishell))
 		return (1);
-	while (data.current && data.i < data.cmd_count)
-	{
-		if (ft_process_pipeline_command(&data, minishell))
-		{
-			free(data.pids);
-			return (1);
-		}
-		data.current = data.current->next;
-		data.i++;
-	}
 	status = ft_finish_pipeline_execution(&data);
 	return (status);
 }
 
-/**
- * Convert cmd list to commands with redirections
- * @param minishell The minishell structure
- * @return true on success, false on failure
- */
 bool	ft_convert_to_commands_with_redir(t_minishell *minishell)
 {
 	t_redir_data	redir_data;

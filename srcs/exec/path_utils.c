@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:15:26 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/27 12:05:00 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 00:00:43 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,6 @@ char	*ft_check_dir_for_cmd(char *dir, char *cmd_name)
 	return (NULL);
 }
 
-/**
- * Check all directories for a command
- * @param path_dirs Array of path directories to check
- * @param cmd_name Command name to search for
- * @return Path to the command if found, NULL otherwise
- */
 static char	*ft_check_all_dirs_for_cmd(char **path_dirs, char *cmd_name)
 {
 	char	*cmd_path;

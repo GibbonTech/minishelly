@@ -33,7 +33,6 @@ void	ft_execute_child_command(t_command *cmd, char *cmd_path,
 {
 	char	**env_array;
 
-	ft_redirect_io(cmd);
 	env_array = ft_env_to_array(minishell);
 	if (!env_array)
 	{
