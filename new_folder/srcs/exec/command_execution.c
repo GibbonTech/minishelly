@@ -97,6 +97,7 @@ int	ft_execute_command_with_redir(t_minishell *minishell, t_command *cmd)
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
 	status = ft_execute_external_command(minishell, cmd, cmd_path);
-	ft_restore_io(stdin_backup, stdout_backup);
+	close(stdin_backup);
+	close(stdout_backup);
 	return (status);
 }
