@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 22:29:21 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/29 00:02:15 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 12:32:15 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_quote_params
 static void	ft_handle_quote_char(char *str, char **result,
 		t_quote_params *params)
 {
-	if ((str[params->i] == '\'' || str[params->i] == '\"')
+	if ((str[params->i] == '\'' || str[params->i] == '"')
 		&& !params->quote_state)
 	{
 		params->quote_state = str[params->i];
@@ -83,5 +83,23 @@ void	ft_remove_quotes(t_token *token)
 	{
 		free(token->token_name);
 		token->token_name = new_str;
+	}
+}
+
+void	ft_process_cmd_quotes(t_command *cmd)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (cmd->cmd_args && cmd->cmd_args[i])
+	{
+		tmp = ft_remove_quotes_from_str(cmd->cmd_args[i]);
+		if (tmp)
+		{
+			free(cmd->cmd_args[i]);
+			cmd->cmd_args[i] = tmp;
+		}
+		i++;
 	}
 }

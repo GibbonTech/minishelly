@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 18:00:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/29 00:00:32 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 12:49:00 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	ft_child_process_setup(t_command *cmd, char *cmd_path,
 	char	**env_array;
 
 	ft_setup_child_exec(cmd, cmd_path, minishell);
+	ft_process_cmd_quotes(cmd);
 	env_array = ft_env_to_array(minishell);
 	if (!env_array)
 	{
@@ -49,9 +50,7 @@ void	ft_child_process_setup(t_command *cmd, char *cmd_path,
 	}
 	ft_setup_child_signals();
 	if (execve(cmd_path, cmd->cmd_args, env_array) == -1)
-	{
 		ft_handle_exec_error(cmd, cmd_path, env_array);
-	}
 	ft_free_env_array(env_array, -1);
 	free(cmd_path);
 	exit(1);

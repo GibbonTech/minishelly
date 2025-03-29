@@ -418,6 +418,11 @@ bool		ft_has_heredoc(t_command *cmd);
 int			ft_process_heredoc_redirections(t_command *cmd,
 				t_minishell *minishell);
 
+/* Quote processing functions */
+char		*ft_remove_quotes_from_str(char *str);
+void		ft_remove_quotes(t_token *token);
+void		ft_process_cmd_quotes(t_command *cmd);
+
 /* cmd_processing_utils2.c */
 size_t		ft_count_words(const char *s, char c);
 void		ft_skip_spaces(char *str, int *i);

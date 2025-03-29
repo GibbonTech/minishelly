@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 17:30:00 by ykhomsi           #+#    #+#             */
-/*   Updated: 2025/03/23 19:40:53 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 12:46:11 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ typedef struct s_arg_data
 
 static bool	ft_build_new_args(char **new_args, t_arg_data *data)
 {
-	int	i;
-	int	new_idx;
+	int		i;
+	int		new_idx;
+	char	*unquoted;
 
 	i = 0;
 	new_idx = 0;
@@ -32,11 +33,10 @@ static bool	ft_build_new_args(char **new_args, t_arg_data *data)
 		if (!ft_is_redirection_arg(data->cmd_args[i], data->redir_tokens,
 				data->target_tokens, data->redir_count))
 		{
-			new_args[new_idx] = ft_strdup(data->cmd_args[i]);
-			if (!new_args[new_idx])
-			{
+			unquoted = ft_remove_quotes_from_str(data->cmd_args[i]);
+			if (!unquoted)
 				return (ft_free_partial_args(new_args, new_idx));
-			}
+			new_args[new_idx] = unquoted;
 			new_idx++;
 		}
 		i++;

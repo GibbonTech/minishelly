@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 13:15:00 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/28 23:57:41 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 12:57:31 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,16 @@ static bool	ft_set_command_name(t_command *cmd, char *cmd_name)
 {
 	if (cmd_name)
 	{
-		cmd->cmd_name = ft_strdup(cmd_name);
-		if (!cmd->cmd_name)
-			return (false);
+		if (cmd->cmd_name)
+			free(cmd->cmd_name);
+		if (cmd_name[0] == '\0')
+			cmd->cmd_name = NULL;
+		else
+		{
+			cmd->cmd_name = ft_strdup(cmd_name);
+			if (!cmd->cmd_name)
+				return (false);
+		}
 	}
 	return (true);
 }
