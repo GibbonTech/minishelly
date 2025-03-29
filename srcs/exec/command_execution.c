@@ -6,7 +6,7 @@
 /*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 19:09:26 by aistierl          #+#    #+#             */
-/*   Updated: 2025/03/29 00:00:40 by ykhomsi          ###   ########.fr       */
+/*   Updated: 2025/03/29 12:04:59 by ykhomsi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,24 @@ static int	ft_handle_empty_command(t_minishell *minishell, t_command *cmd)
 {
 	int	stdin_backup;
 	int	stdout_backup;
+	int	status;
 
 	stdin_backup = dup(STDIN_FILENO);
 	stdout_backup = dup(STDOUT_FILENO);
+	if (stdin_backup == -1 || stdout_backup == -1)
+		return (1);
 	if (ft_apply_redirections(cmd, minishell) == -1)
 	{
 		ft_restore_io(stdin_backup, stdout_backup);
 		return (1);
+	}
+	if (cmd->cmd_args && cmd->cmd_args[0])
+	{
+		cmd->cmd_name = cmd->cmd_args[0];
+		status = ft_execute_command_with_redir(minishell, cmd);
+		cmd->cmd_name = NULL;
+		ft_restore_io(stdin_backup, stdout_backup);
+		return (status);
 	}
 	ft_restore_io(stdin_backup, stdout_backup);
 	return (0);
