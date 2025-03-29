@@ -1,0 +1,77 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykhomsi <ykhomsi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 15:00:00 by ykhomsi           #+#    #+#             */
+/*   Updated: 2025/03/27 12:08:48 by ykhomsi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+volatile sig_atomic_t	g_exit_codes = 0;
+
+int	initialize_minishell(t_minishell **minishell, char **envp)
+{
+	if (!ft_check_terminal())
+		return (0);
+	if (!ft_init_minishell_struct(minishell))
+		return (0);
+	if (!ft_envar_list(envp, *minishell))
+	{
+		free(*minishell);
+		return (0);
+	}
+	return (1);
+}
+
+int	process_input(t_minishell *minishell, char *input)
+{
+	char	*processed_input;
+
+	processed_input = ft_insert_spaces_around_operators(input);
+	if (!processed_input)
+		return (0);
+	if (!ft_parsing(minishell, processed_input))
+	{
+		ft_free_token_list(minishell);
+		free(processed_input);
+		return (1);
+	}
+	ft_reset_command_lists(minishell);
+	if (!ft_prepare_commands(minishell, processed_input))
+	{
+		free(processed_input);
+		return (0);
+	}
+	minishell->exit_status = ft_execute_and_cleanup(minishell);
+	free(processed_input);
+	return (1);
+}
+
+void	ft_cleanup_minishell(t_minishell *minishell)
+{
+	ft_cleanup_env_vars(minishell);
+	ft_cleanup_data_structures(minishell);
+	if (minishell)
+		free(minishell);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_minishell	*minishell;
+
+	(void)ac;
+	(void)av;
+	if (!initialize_minishell(&minishell, envp))
+		return (1);
+	ft_setup_interactive_signals();
+	ft_run_shell_loop(minishell);
+	ft_cleanup_minishell(minishell);
+	ft_reset_signals();
+	rl_clear_history();
+	return (g_exit_codes);
+}
